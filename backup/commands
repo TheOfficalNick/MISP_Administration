@@ -1,1 +1,56 @@
+Needed variables within the script
 
+DB container name and MISP core container name. This can be found via docker ps command
+
+If you gave no environment variables for the MariaDB, you likely will be stuck with the default root password of password. 
+Also, needed is the filepath and file names for the backups
+
+How to get the script ready and use the script for backups. 
+
+##########################################################################################
+
+#Make backup path
+
+cd misp-docker
+
+mkdir backup
+
+#save the script
+
+misp_backup.sh
+
+#make the script executable
+
+chmod +x misp_backup.sh
+
+#run the script
+#script can be executed while MISP is running.
+./misp_backup.sh
+
+
+##########################################################################################
+#Restoration Process
+
+#stop all containers
+
+cd misp-docker
+
+docker-compose down
+
+#Database restoration
+
+#restore the DB container
+
+docker-compose up -d db
+
+sudo docker exec -i misp-docker-db-1 mysql -u root -p'your_password_here' misp < /path/to/your/backup/misp_db_backup_DATE.sql
+
+#MISP files system restoration
+
+docker-compose up -d misp-core
+
+sudo docker run --rm --volumes-from misp-docker-misp-core-1 -v /path/to/your/backup/:/backup ubuntu bash -c "cd /var/www/MISP && tar xzvf /backup/misp_files_backup_DATE.tar.gz --strip 1"
+
+#restart all services
+
+docker-compose up -d
