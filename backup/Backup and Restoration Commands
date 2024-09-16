@@ -29,7 +29,7 @@ chmod +x misp_backup.sh
 
 
 ##########################################################################################
-#Restoration Process
+#Manual Restoration Process
 
 #stop all containers
 
