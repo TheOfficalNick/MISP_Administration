@@ -1,0 +1,19 @@
+#Running the DB OptimiseTables Command
+
+
+#Take a backup before you do this work
+#Schedule during maintenance window
+#Preform regularly when you update your MISP app
+#Identify the MISP Core container
+docker ps
+#Access the MISP Core Container
+docker exec -it <container_name_or_id> /bin/bash
+#Navigate to the MISP Console Directory
+cd /var/www/MISP/app/Console
+#Run the Database Optimization Command
+./cake admin optimiseTables
+#Exit the Container
+exit
+
+
+#This can be preformed in a non docker environment just exclude the docker commands. 
